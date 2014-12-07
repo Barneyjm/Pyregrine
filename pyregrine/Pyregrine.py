@@ -60,6 +60,7 @@ class Pyregrine(object):
     def validate_entity(self, entity_type):
         """
         POST    api/entities/validate/:entity-type    Validate the entity
+        
         :entity-type can be cluster, feed or process.
 
         """
@@ -69,6 +70,7 @@ class Pyregrine(object):
     def submit_entity(self, entity_type):
         """
         POST    api/entities/submit/:entity-type    Submit the entity
+        
         :entity-type can be cluster, feed or process.
 
         """
@@ -79,7 +81,7 @@ class Pyregrine(object):
         POST    api/entities/update/:entity-type/:entity-name    Update the entity
         :entity-type can be cluster, feed or process.
         :entity-name is name of the feed or process.
-        :effective is optional effective time
+        ::effective is optional effective time
 
         """
         if effective is None:
@@ -92,21 +94,26 @@ class Pyregrine(object):
         """
         POST    api/entities/submitAndSchedule/:entity-type    Submit & Schedule the entity
         :entity-type can either be a feed or a process.
-
+        
+        :entity-type can either be a feed or a process.
         """
         return self._post("entities/submitAndSchedule/"+entity_type, self.credentials)
     
     def schedule_entity(self, entity_type, entity_name):
         """
         POST    api/entities/schedule/:entity-type/:entity-name    Schedule the entity
-
+        
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
         """
         return self._post("entities/schedule/"+entity_type+"/"+entity_name, self.credentials)
     
     def suspend_entity(self, entity_type, entity_name):
         """
         POST    api/entities/suspend/:entity-type/:entity-name    Suspend the entity
-
+        
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
         """
         return self._post("entities/suspend/"+entity_type+"/"+entity_name, self.credentials)
     
@@ -114,6 +121,8 @@ class Pyregrine(object):
         """
         POST    api/entities/resume/:entity-type/:entity-name    Resume the entity
 
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
         """
         return self._post("entities/resume/"+entity_type+"/"+entity_name, self.credentials)
     
@@ -121,6 +130,8 @@ class Pyregrine(object):
         """
         DELETE    api/entities/delete/:entity-type/:entity-name    Delete the entity
 
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
         """
         return self._delete("entities/delete/"+entity_type+"/"+entity_name, self.credentials)
 
@@ -129,6 +140,8 @@ class Pyregrine(object):
         """
         GET    api/entities/status/:entity-type/:entity-name    Get the status of the entity
 
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
         """
         return self._get("entities/status/"+entity_type+"/"+entity_name, self.credentials)
 
@@ -137,26 +150,29 @@ class Pyregrine(object):
         """
         GET    api/entities/definition/:entity-type/:entity-name    Get the definition of the entity
 
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
         """
         return self._get("entities/definition/"+entity_type+"/"+entity_name, self.credentials)
     
-    def get_entity_list(self, entity_type, fields=None, filterBy=None, tags=None, orderBy=None, sortOrder=None, offset=None, numResults=None):
+    def get_entity_list(self, entity_type, fields=None, filterBy=None, tags=None, orderBy=None, sortOrder=None, 
+                        offset=None, numResults=None):
         """
         GET    api/entities/list/:entity-type    Get the list of entities
 
         :entity_type Valid options are cluster, feed or process.
         :fields <optional param> Fields of entity that the user wants to view, separated by commas.
             Valid options are STATUS, TAGS, PIPELINES.
-        :filterBy <optional param> Filter results by list of field:value pairs. Example: filterBy=STATUS:RUNNING,PIPELINES:clickLogs
+        ::filterBy <optional param> Filter results by list of field:value pairs. Example: filterBy=STATUS:RUNNING,PIPELINES:clickLogs
             Supported filter fields are NAME, STATUS, PIPELINES, CLUSTER.
             Query will do an AND among filterBy fields.
-        :tags <optional param> Return list of entities that have specified tags, separated by a comma. Query will do AND on tag values.
+        ::tags <optional param> Return list of entities that have specified tags, separated by a comma. Query will do AND on tag values.
             Example: tags=consumer=consumer@xyz.com,owner=producer@xyz.com
-        :orderBy <optional param> Field by which results should be ordered.
+        ::orderBy <optional param> Field by which results should be ordered.
             Supports ordering by "name".
-        :sortOrder <optional param> Valid options are "asc" and "desc"
-        :offset <optional param> Show results from the offset, used for pagination. Defaults to 0.
-        :numResults <optional param> Number of results to show per request, used for pagination. Only integers > 0 are valid, Default is 10.
+        ::sortOrder <optional param> Valid options are "asc" and "desc"
+        ::offset <optional param> Show results from the offset, used for pagination. Defaults to 0.
+        ::numResults <optional param> Number of results to show per request, used for pagination. Only integers > 0 are valid, Default is 10.
         
         GET http://localhost:15000/api/entities/list/process?filterBy=STATUS:RUNNING,PIPELINES:dataReplication&fields=status,pipelines,tags&tags=consumer=consumer@xyz.com&orderBy=name&offset=2&numResults=2
         """
@@ -182,27 +198,30 @@ class Pyregrine(object):
                 
         return self._get("entities/list/"+entity_type+optionals, self.credentials)
     
-    def get_entity_summary(self, entity_type, cluster, start=None, end=None, fields=None, filterBy=None, tags=None, orderBy=None, sortOrder=None, offset=None, numResults=None, numInstances=None):
+    def get_entity_summary(self, entity_type, cluster, start=None, end=None, fields=None, filterBy=None, 
+                           tags=None, orderBy=None, sortOrder=None, offset=None, numResults=None, numInstances=None):
         """
         GET    api/entities/summary/:entity-type/:cluster    Get instance summary of all entities
 
-        start <optional param> Show entity summaries from this date. Date format is yyyy-MM-dd'T'HH:mm'Z'.
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
+        ::start <optional param> Show entity summaries from this date. Date format is yyyy-MM-dd'T'HH:mm'Z'.
             By default, it is set to (end - 2 days).
-        end <optional param> Show entity summary up to this date. Date format is yyyy-MM-dd'T'HH:mm'Z'.
+        ::end <optional param> Show entity summary up to this date. Date format is yyyy-MM-dd'T'HH:mm'Z'.
             Default is set to now.
-        fields <optional param> Fields of entity that the user wants to view, separated by commas.
+        ::fields <optional param> Fields of entity that the user wants to view, separated by commas.
             Valid options are STATUS, TAGS, PIPELINES.
-        filterBy <optional param> Filter results by list of field:value pairs. Example: filterBy=STATUS:RUNNING,PIPELINES:clickLogs
+        ::filterBy <optional param> Filter results by list of field:value pairs. Example: filterBy=STATUS:RUNNING,PIPELINES:clickLogs
             Supported filter fields are NAME, STATUS, PIPELINES, CLUSTER.
             Query will do an AND among filterBy fields.
-        tags <optional param> Return list of entities that have specified tags, separated by a comma. Query will do AND on tag values.
+        ::tags <optional param> Return list of entities that have specified tags, separated by a comma. Query will do AND on tag values.
             Example: tags=consumer=consumer@xyz.com,owner=producer@xyz.com
-        orderBy <optional param> Field by which results should be ordered.
+        ::orderBy <optional param> Field by which results should be ordered.
             Supports ordering by "name".
-        sortOrder <optional param> Valid options are "asc" and "desc"
-        offset <optional param> Show results from the offset, used for pagination. Defaults to 0.
-        numResults <optional param> Number of results to show per request, used for pagination. Only integers > 0 are valid, Default is 10.
-        numInstances <optional param> Number of recent instances to show per entity. Only integers > 0 are valid, Default is 7.
+        ::sortOrder <optional param> Valid options are "asc" and "desc"
+        ::offset <optional param> Show results from the offset, used for pagination. Defaults to 0.
+        ::numResults <optional param> Number of results to show per request, used for pagination. Only integers > 0 are valid, Default is 10.
+        ::numInstances <optional param> Number of recent instances to show per entity. Only integers > 0 are valid, Default is 7.
         """
         optionals = "?"
 
@@ -230,13 +249,15 @@ class Pyregrine(object):
             optionals = optionals.strip("&")
         except: pass
         
-        return self._get("entities/summary/"+entity_type+"/"+cluster, self.credentials)
+        return self._get("entities/summary/"+entity_type+"/"+cluster+optionals, self.credentials)
 
     
     def get_entity_dependencies(self, entity_type, entity_name):
         """
         GET    api/entities/dependencies/:entity-type/:entity-name    Get the dependencies of the entity
 
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
         """
         return self._get("entities/dependencies/"+entity_type+"/"+entity_name, self.credentials)
 
@@ -245,7 +266,9 @@ class Pyregrine(object):
     def get_running_instances(self, entity_type, entity_name):
         """
         GET    api/instance/running/:entity-type/:entity-name    List of running instances.
-
+        
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
         """
         return self._get("instance/running/"+entity_type+"/"+entity_name, self.credentials)
     
@@ -253,57 +276,233 @@ class Pyregrine(object):
         """
         GET    api/instance/list/:entity-type/:entity-name    List of instances
 
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
         """
         return self._get("instance/running/"+entity_type+"/"+entity_name, self.credentials)
     
-    def get_status_instance(self, entity_type, entity_name):
+    def get_status_instance(self, entity_type, entity_name, start=None, end=None, colo=None, lifecycle=None, 
+                            filterBy=None, orderBy=None, sortOrder=None, offset=None, numResults=None, 
+                            numInstances=None):
         """
         GET    api/instance/status/:entity-type/:entity-name    Status of a given instance
+        
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
+        ::start <optional param> Show instances from this date. Date format is yyyy-MM-dd'T'HH:mm'Z'.
+            By default, it is set to (end - (10 * entityFrequency)).
+        ::end <optional param> Show instances up to this date. Date format is yyyy-MM-dd'T'HH:mm'Z'.
+            Default is set to now.
+        ::colo <optional param> Colo on which the query should be run.
+        ::lifecycle <optional param> Valid lifecycles for feed are Eviction/Replication(default) and for process is Execution(default).
+        ::filterBy <optional param> Filter results by list of field:value pairs. Example: filterBy=STATUS:RUNNING,CLUSTER:primary-cluster
+            Supported filter fields are STATUS, CLUSTER, SOURCECLUSTER, STARTEDAFTER.
+            Query will do an AND among filterBy fields.
+        ::orderBy <optional param> Field by which results should be ordered.
+            Supports ordering by "status","startTime","endTime","cluster".
+        ::sortOrder <optional param> Valid options are "asc" and "desc"
+        ::offset <optional param> Show results from the offset, used for pagination. Defaults to 0.
+        ::numResults <optional param> Number of results to show per request, used for pagination. Only integers > 0 are valid, Default is 10.
 
         """
-        return self._get("instance/status/"+entity_type+"/"+entity_name, self.credentials)
+        optionals = "?"
+
+        if start is not None:
+            optionals += "start="+start+"&"
+        if end is not None:
+            optionals += "end="+end+"&"
+        if colo is not None:
+            optionals += "colo="+colo+"&"
+        if lifecycle is not None:
+            optionals += "lifecycle="+lifecycle+"&"
+        if filterBy is not None:
+            optionals += "filterBy="+filterBy+"&"
+        if orderBy is not None:
+            optionals += "orderBy="+orderBy+"&"
+        if sortOrder is not None:
+            optionals += "sortOrder="+sortOrder+"&"
+        if offset is not None:
+            optionals += "offset="+offset+"&"
+        if numResults is not None:
+            optionals += "numResults="+numResults+"&"
+        if numInstances is not None:
+            optionals += "numInstances="+numInstances+"&"
+        try:
+            optionals = optionals.strip("&")
+        except: pass
+        
+        return self._get("instance/status/"+entity_type+"/"+entity_name+optionals, self.credentials)
     
-    def kill_instance(self, entity_type, entity_name):
+    def kill_instance(self, entity_type, entity_name, start=None, lifecycle=None):
         """
         POST    api/instance/kill/:entity-type/:entity-name    Kill a given instance
 
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
+        ::start <optional param> start time of the entity.
+        ::lifecycle <optional param> can be Eviction/Replication(default) for feed and Execution(default) for process.
         """
-        return self._post("instance/kill/"+entity_type+"/"+entity_name, self.credentials)
+        
+        optionals = "?"
+
+        if start is not None:
+            optionals += "start="+start+"&"
+        if lifecycle is not None:
+            optionals += "lifecycle="+lifecycle+"&"
+        try:
+            optionals = optionals.strip("&")
+        except: pass
+        
+        return self._post("instance/kill/"+entity_type+"/"+entity_name+optionals, self.credentials)
     
-    def suspend_instance(self, entity_type, entity_name):
+    def suspend_instance(self, entity_type, entity_name, start=None, lifecycle=None):
         """
         POST    api/instance/suspend/:entity-type/:entity-name    Suspend a running instance
 
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
+        ::start is the start time of the instance that you want to refer to
+        ::lifecycle <optional param> can be Eviction/Replication(default) for feed and Execution(default) for process.
         """
-        return self._post("instance/suspend/"+entity_type+"/"+entity_name, self.credentials)
+        optionals = "?"
+
+        if start is not None:
+            optionals += "start="+start+"&"
+        if lifecycle is not None:
+            optionals += "lifecycle="+lifecycle+"&"
+        try:
+            optionals = optionals.strip("&")
+        except: pass
+        
+        return self._post("instance/suspend/"+entity_type+"/"+entity_name+optionals, self.credentials)
     
-    def resume_instance(self, entity_type, entity_name):
+    def resume_instance(self, entity_type, entity_name, start=None, lifecycle=None):
         """
         POST    api/instance/resume/:entity-type/:entity-name    Resume a given instance
-
+        
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
+        ::start <optional param> the start time of the instance that you want to refer to
+        ::lifecycle <optional param> can be Eviction/Replication(default) for feed and Execution(default) for process.
         """
+        optionals = "?"
+
+        if start is not None:
+            optionals += "start="+start+"&"
+        if lifecycle is not None:
+            optionals += "lifecycle="+lifecycle+"&"
+        try:
+            optionals = optionals.strip("&")
+        except: pass
+        
         return self._post("instance/resume/"+entity_type+"/"+entity_name, self.credentials)
     
-    def rerun_instance(self, entity_type, entity_name):
+    def rerun_instance(self, entity_type, entity_name, start=None, lifecycle=None):
         """
         POST    api/instance/rerun/:entity-type/:entity-name    Rerun a given instance
-
+        
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
+        ::start <optional param> the start time of the instance that you want to refer to
+        ::lifecycle <optional param> can be Eviction/Replication(default) for feed and Execution(default) for process.
         """
-        return self._post("instance/rerun/"+entity_type+"/"+entity_name, self.credentials)
+        optionals = "?"
+
+        if start is not None:
+            optionals += "start="+start+"&"
+        if lifecycle is not None:
+            optionals += "lifecycle="+lifecycle+"&"
+        try:
+            optionals = optionals.strip("&")
+        except: pass
+        
+        return self._post("instance/rerun/"+entity_type+"/"+entity_name+optionals, self.credentials)
     
-    def get_instance_logs(self, entity_type, entity_name):
+    def get_instance_logs(self, entity_type, entity_name, start=None, end=None, colo=None, runId=None, 
+                          lifecycle=None, filterBy=None, orderBy=None, sortOrder=None, offset=None, 
+                          numResults=None, numInstances=None):
         """
         GET    api/instance/logs/:entity-type/:entity-name    Get logs of a given instance
+        
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
+        ::start <optional param> Show instances from this date. Date format is yyyy-MM-dd'T'HH:mm'Z'.
+            By default, it is set to (end - (10 * entityFrequency)).
+        ::end <optional param> Show instances up to this date. Date format is yyyy-MM-dd'T'HH:mm'Z'.
+            Default is set to now.
+        ::colo <optional param> Colo on which the query should be run.
+        ::lifecycle <optional param> Valid lifecycles for feed are Eviction/Replication(default) and for process is Execution(default).
+        ::filterBy <optional param> Filter results by list of field:value pairs. Example: filterBy=STATUS:RUNNING,CLUSTER:primary-cluster
+            Supported filter fields are STATUS, CLUSTER, SOURCECLUSTER, STARTEDAFTER.
+            Query will do an AND among filterBy fields.
+        ::orderBy <optional param> Field by which results should be ordered.
+            Supports ordering by "status","startTime","endTime","cluster".
+        ::sortOrder <optional param> Valid options are "asc" and "desc"
+        ::offset <optional param> Show results from the offset, used for pagination. Defaults to 0.
+        ::numResults <optional param> Number of results to show per request, used for pagination. Only integers > 0 are valid, Default is 10.
 
         """
-        return self._get("instance/logs/"+entity_type+"/"+entity_name, self.credentials)
+        optionals = "?"
+
+        if start is not None:
+            optionals += "start="+start+"&"
+        if end is not None:
+            optionals += "end="+end+"&"
+        if colo is not None:
+            optionals += "colo="+colo+"&"
+        if runId is not None:
+            optionals += "runId="+runId+"&"
+        if lifecycle is not None:
+            optionals += "lifecycle="+lifecycle+"&"
+        if filterBy is not None:
+            optionals += "filterBy="+filterBy+"&"
+        if orderBy is not None:
+            optionals += "orderBy="+orderBy+"&"
+        if sortOrder is not None:
+            optionals += "sortOrder="+sortOrder+"&"
+        if offset is not None:
+            optionals += "offset="+offset+"&"
+        if numResults is not None:
+            optionals += "numResults="+numResults+"&"
+        if numInstances is not None:
+            optionals += "numInstances="+numInstances+"&"
+        try:
+            optionals = optionals.strip("&")
+        except: pass
+        
+        return self._get("instance/logs/"+entity_type+"/"+entity_name+optionals, self.credentials)
     
-    def get_instance_summary(self, entity_type, entity_name):
+    def get_instance_summary(self, entity_type, entity_name, start=None, end=None, colo=None, lifecycle=None):
         """
         GET    api/instance/summary/:entity-type/:entity-name    Return summary of instances for an entity
+        
+        :entity-type can either be a feed or a process.
+        :entity-name is name of the entity.
+        ::start <optional param> Show instances from this date. Date format is yyyy-MM-dd'T'HH:mm'Z'.
+            By default, it is set to (end - (10 * entityFrequency)).
+        ::end <optional param> Show instances up to this date. Date format is yyyy-MM-dd'T'HH:mm'Z'.
+            Default is set to now.
+        ::colo <optional param> Colo on which the query should be run.
+        ::lifecycle <optional param> Valid lifecycles for feed are Eviction/Replication(default) and for process is Execution(default).
 
         """
-        return self._get("instance/summary/"+entity_type+"/"+entity_name, self.credentials)
+        
+        optionals = "?"
+
+        if start is not None:
+            optionals += "start="+start+"&"
+        if end is not None:
+            optionals += "end="+end+"&"
+        if colo is not None:
+            optionals += "colo="+colo+"&"
+        if lifecycle is not None:
+            optionals += "lifecycle="+lifecycle+"&"
+
+        try:
+            optionals = optionals.strip("&")
+        except: pass
+        
+        return self._get("instance/summary/"+entity_type+"/"+entity_name+optionals, self.credentials)
 
     
     #### Linage Graph Resources ####
