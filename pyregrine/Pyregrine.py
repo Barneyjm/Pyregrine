@@ -95,7 +95,6 @@ class Pyregrine(object):
         POST    api/entities/submitAndSchedule/:entity-type    Submit & Schedule the entity
         :entity-type can either be a feed or a process.
         
-        :entity-type can either be a feed or a process.
         """
         return self._post("entities/submitAndSchedule/"+entity_type, self.credentials)
     
