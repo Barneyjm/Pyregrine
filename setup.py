@@ -1,7 +1,7 @@
 from distutils.core import setup
 setup(
     name = 'Pyregrine',
-    version = '0.1.4',
+    version = '0.1.6',
     description = 'Pyregrine: A Python wrapper for Apache Falcon\'s RESTful API.',
     author='James Barney',
     author_email = 'pyregrinefalcon@gmail.com',
