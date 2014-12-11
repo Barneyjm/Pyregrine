@@ -41,14 +41,14 @@ class Pyregrine(object):
         """
         GET    api/admin/stack    Get stack of the server
         """
-        params = {}.update(self.credentials)
+        params = self.credentials
         return self._get("admin/stack", params)
     
     def get_version(self):
         """
         GET    api/admin/version    Get version of the server
         """
-        params = {}.update(self.credentials)
+        params = self.credentials
 
         return self._get("admin/version", params)
     
